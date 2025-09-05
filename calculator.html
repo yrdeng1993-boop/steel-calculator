@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鋼線直徑計算機</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212;
+            color: #E0E0E0;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-neutral-800 rounded-2xl shadow-xl p-8 max-w-md w-full border border-neutral-700">
+        <h1 class="text-3xl font-bold text-center text-white mb-6">
+            鋼線直徑計算機
+        </h1>
+        <p class="text-center text-sm text-neutral-400 mb-8">
+            請輸入鋼線的長度和重量，我們將為您計算出直徑。
+        </p>
+
+        <div class="space-y-6">
+            <div>
+                <label for="length" class="block text-sm font-medium text-neutral-300 mb-2">
+                    長度 (cm)
+                </label>
+                <input
+                    type="number"
+                    id="length"
+                    class="w-full p-3 rounded-lg bg-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors"
+                    placeholder="請輸入長度（公分）"
+                    oninput="calculateDiameter()"
+                />
+            </div>
+
+            <div>
+                <label for="weight" class="block text-sm font-medium text-neutral-300 mb-2">
+                    重量 (g)
+                </label>
+                <input
+                    type="number"
+                    id="weight"
+                    class="w-full p-3 rounded-lg bg-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors"
+                    placeholder="請輸入重量（公克）"
+                    oninput="calculateDiameter()"
+                />
+            </div>
+
+            <div class="bg-sky-900 bg-opacity-30 border border-sky-700 rounded-xl p-4 text-center">
+                <p class="text-sky-300 font-semibold text-sm mb-1">計算結果</p>
+                <p id="result" class="text-3xl font-bold text-sky-400">
+                    -- mm
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateDiameter() {
+            const lengthCm = parseFloat(document.getElementById('length').value);
+            const weightG = parseFloat(document.getElementById('weight').value);
+            const resultElement = document.getElementById('result');
+
+            // 檢查輸入是否為有效數字
+            if (isNaN(lengthCm) || isNaN(weightG) || lengthCm <= 0 || weightG <= 0) {
+                resultElement.textContent = '-- mm';
+                return;
+            }
+
+            // 鋼的密度，單位：g/cm³
+            const steelDensity = 7.85; 
+
+            // 計算直徑（單位為 mm）
+            // 公式: 直徑 = 2 * sqrt(重量 / (密度 * pi * 長度)) * 10
+            const diameterCm = 2 * Math.sqrt(weightG / (steelDensity * Math.PI * lengthCm));
+            const diameterMm = diameterCm * 10;
+
+            resultElement.textContent = `${diameterMm.toFixed(3)} mm`;
+        }
+    </script>
+</body>
+</html>
